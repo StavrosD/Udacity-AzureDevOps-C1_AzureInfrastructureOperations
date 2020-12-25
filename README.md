@@ -147,7 +147,7 @@ Next, running "terraform plan -out solution.plan" should create the file "soluti
 A summary with the number of resources that will be created is also displayed
 > Plan: 21 to add, 0 to change, 0 to destroy.
  
-Finally, after running "terraform apply solution.plan" a message will be displayed to verify that the resources are created successfully.
+Finally, after running "terraform apply solution.plan" a message will be displayed that verifies that the resources are created successfully.
 
 The resources will be vissible in your Azure Portal account under the "azureDevOpsCourse-resources" resource group.
 ![Created resources](https://github.com/StavrosD/Udacity-AzureDevOps-C1_AzureInfrastructureOperations/raw/main/resources.png)
