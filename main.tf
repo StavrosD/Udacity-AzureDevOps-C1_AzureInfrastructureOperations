@@ -10,11 +10,13 @@ locals {
 
 resource "azurerm_resource_group" "dev_ops_project" {
   name = "${var.prefix}-resources"
-      location =  var.location
+  tags =local.common_tags
+  location =  var.location
 }
 
 resource "azurerm_virtual_network" "dev_ops_project" {
   name = "${var.prefix}-network"
+  tags =local.common_tags
   address_space = [ "10.0.0.0/16" ]
   location = azurerm_resource_group.dev_ops_project.location
   resource_group_name = azurerm_resource_group.dev_ops_project.name
@@ -30,6 +32,7 @@ resource "azurerm_subnet" "dev_ops_project" {
 resource "azurerm_network_interface" "dev_ops_project" {
   count = var.instance_count
   name = "${var.prefix}-nic${count.index}"
+  tags =local.common_tags
   resource_group_name = azurerm_resource_group.dev_ops_project.name
   location = azurerm_resource_group.dev_ops_project.location
   ip_configuration {
@@ -50,6 +53,7 @@ data "azurerm_image" "packer-image" {
 resource "azurerm_linux_virtual_machine" "dev_ops_project" {
   count = var.instance_count
   name = "${var.prefix}-vm${count.index}"
+  tags =local.common_tags
   resource_group_name = azurerm_resource_group.dev_ops_project.name
   location = azurerm_resource_group.dev_ops_project.location
   size = "Standard_B1s"
@@ -74,6 +78,7 @@ resource "azurerm_linux_virtual_machine" "dev_ops_project" {
 
 resource "azurerm_public_ip" "pip" {
   name                = "${var.prefix}-pip"
+  tags =local.common_tags
   resource_group_name = azurerm_resource_group.dev_ops_project.name
   location            = azurerm_resource_group.dev_ops_project.location
   allocation_method   = "Dynamic"
@@ -82,6 +87,7 @@ resource "azurerm_public_ip" "pip" {
 
 resource "azurerm_network_security_group" "webserver" {
   name                = "${var.prefix}-tls_webserver"
+  tags =local.common_tags
   location            = azurerm_resource_group.dev_ops_project.location
   resource_group_name = azurerm_resource_group.dev_ops_project.name
 
@@ -144,6 +150,7 @@ resource "azurerm_network_interface_security_group_association" "main" {
 resource "azurerm_availability_set" "dev_ops_project" {
   name                         = "${var.prefix}-avset"
   location                     = azurerm_resource_group.dev_ops_project.location
+  tags =local.common_tags
   resource_group_name          = azurerm_resource_group.dev_ops_project.name
   platform_fault_domain_count  = 2
   platform_update_domain_count = 2
@@ -153,6 +160,7 @@ resource "azurerm_availability_set" "dev_ops_project" {
 resource "azurerm_lb" "dev_ops_project" {
   name                = "${var.prefix}-lb"
   location            = azurerm_resource_group.dev_ops_project.location
+  tags =local.common_tags
   resource_group_name = azurerm_resource_group.dev_ops_project.name
 
   frontend_ip_configuration {
@@ -187,6 +195,7 @@ resource "azurerm_network_interface_backend_address_pool_association" "dev_ops_p
 resource "azurerm_managed_disk" "dev_ops_project" {
   count                = var.instance_count 
   name                 = "${var.prefix}-data${count.index}"
+  tags =local.common_tags
   location             = azurerm_resource_group.dev_ops_project.location
   resource_group_name  = azurerm_resource_group.dev_ops_project.name
   storage_account_type = "Standard_LRS"
