@@ -139,7 +139,7 @@ When the image creation is completed, a verification message will be displayed.
 You may verify the image creation using the Azure portal, under "All resources" an image named "myPackerProjectImage" will be avaiable that belongs to the "UdacityDevOpsResourceGroup" resource group.
 
 
-#####2. Terraform
+##### 2. Terraform
 After running "terraform init", you should see the message:
 > Terraform has been successfully initialized!
 
